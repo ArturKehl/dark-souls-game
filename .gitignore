@@ -1,0 +1,162 @@
+﻿# ============================================================
+#  🔥 DARK SOULS — .gitignore
+# ============================================================
+
+# ===== DEPENDÊNCIAS =====
+node_modules/
+jspm_packages/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npm/
+.yarn/
+
+# ===== BANCO DE DADOS SQLITE =====
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+backend/database.sqlite
+backend/database.sqlite-journal
+backend/database.sqlite-wal
+backend/database.sqlite-shm
+data/
+*.sqlite.bak
+
+# ===== VARIÁVEIS DE AMBIENTE =====
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+*.env
+!.env.example
+
+# ===== LOGS =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===== BACKUPS DO EDITOR =====
+*.bak
+*.bak2
+*.bak3
+*.bak4
+*.backup
+*.old
+*.orig
+*~
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# ===== SISTEMA OPERACIONAL =====
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ===== IDEs E EDITORES =====
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+.project
+.classpath
+.c9/
+*.tmproj
+
+# ===== BUILD E DIST =====
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.npm/
+.eslintcache
+.stylelintcache
+
+# ===== COBERTURA DE TESTES =====
+coverage/
+.nyc_output/
+*.lcov
+lib-cov
+
+# ===== DEPLOY =====
+.vercel/
+.netlify/
+.firebase/
+.heroku/
+.now/
+.serverless/
+.aws-sam/
+
+# ===== DOCKER =====
+docker-compose.override.yml
+*.pid
+*.seed
+*.pid.lock
+
+# ===== PYTHON (scripts auxiliares) =====
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# ===== RUNTIME =====
+pids/
+*.pid
+*.seed
+*.pid.lock
+lib-cov
+.grunt/
+
+# ===== TEMPORÁRIOS =====
+tmp/
+temp/
+.cache/
+*.tmp
+*.temp
+
+# ===== ARQUIVOS ESPECÍFICOS DO PROJETO =====
+backend/*.bak
+frontend/*.bak
+public/uploads/
+storage/
+*.local
+*.log.txt
+
+# ===== NÃO IGNORAR =====
+!.gitignore
+!.env.example
+!README.md

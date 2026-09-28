@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Dark Souls — Arena dos Hollows</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="embers"></canvas>
+<div class="vignette"></div>
+
+<div id="app-screen">
+  <header>
+    <div class="title-wrap">
+      <div class="flame">🔥</div>
+      <h1>DARK SOULS</h1>
+      <div class="flame">🔥</div>
+    </div>
+    <p class="subtitle">— Arena dos Hollows —</p>
+    
+  </header>
+
+  <main>
+    <section class="panel form-panel">
+      <h2 id="form-title">⚔️ Forjar Hollow</h2>
+      <form id="character-form" autocomplete="off">
+        <input type="hidden" id="character-id">
+        <label>Nome <input type="text" id="name" required placeholder="Ex: Ashen One" maxlength="20"></label>
+        <label>Classe</label>
+        <div class="class-picker" id="class-picker">
+          <button type="button" class="class-option" data-class="Knight"><span>🛡️</span><small>Knight</small></button>
+          <button type="button" class="class-option" data-class="Warrior"><span>⚔️</span><small>Warrior</small></button>
+          <button type="button" class="class-option" data-class="Sorcerer"><span>🔮</span><small>Sorcerer</small></button>
+          <button type="button" class="class-option" data-class="Pyromancer"><span>🔥</span><small>Pyromancer</small></button>
+          <button type="button" class="class-option" data-class="Cleric"><span>✨</span><small>Cleric</small></button>
+          <button type="button" class="class-option" data-class="Thief"><span>🗡️</span><small>Thief</small></button>
+          <button type="button" class="class-option" data-class="Deprived"><span>🪓</span><small>Deprived</small></button>
+        </div>
+        <input type="hidden" id="class" required>
+
+        <div id="kit-preview" class="kit-preview hidden">
+          <div class="kit-title">🎁 Kit Inicial:</div>
+          <div class="kit-items" id="kit-items"></div>
+        </div>
+
+        <div id="points-panel" class="points-panel">
+          <div class="points-header">
+            <div>Pontos: <b id="points-remaining">20</b></div>
+            <button type="button" id="reset-points" class="mini-btn">↺ Resetar</button>
+          </div>
+          <p id="class-base-info" class="class-base-info">Selecione uma classe.</p>
+
+          <div class="attr-row" data-attr="vitality">
+            <div class="attr-label"><span>❤️ Vitalidade</span></div>
+            <button type="button" class="attr-btn minus" data-attr="vitality" data-delta="-1">−</button>
+            <input type="number" id="vitality" value="10" readonly>
+            <button type="button" class="attr-btn plus" data-attr="vitality" data-delta="1">+</button>
+          </div>
+          <div class="attr-row" data-attr="strength">
+            <div class="attr-label"><span>💪 Força</span></div>
+            <button type="button" class="attr-btn minus" data-attr="strength" data-delta="-1">−</button>
+            <input type="number" id="strength" value="10" readonly>
+            <button type="button" class="attr-btn plus" data-attr="strength" data-delta="1">+</button>
+          </div>
+          <div class="attr-row" data-attr="dexterity">
+            <div class="attr-label"><span>🏹 Destreza</span></div>
+            <button type="button" class="attr-btn minus" data-attr="dexterity" data-delta="-1">−</button>
+            <input type="number" id="dexterity" value="10" readonly>
+            <button type="button" class="attr-btn plus" data-attr="dexterity" data-delta="1">+</button>
+          </div>
+          <div class="attr-row" data-attr="intelligence">
+            <div class="attr-label"><span>🔮 Inteligência</span></div>
+            <button type="button" class="attr-btn minus" data-attr="intelligence" data-delta="-1">−</button>
+            <input type="number" id="intelligence" value="10" readonly>
+            <button type="button" class="attr-btn plus" data-attr="intelligence" data-delta="1">+</button>
+          </div>
+        </div>
+
+        <div class="difficulty-panel">
+          <h3 class="difficulty-title">⚔️ Dificuldade</h3>
+          <div class="difficulty-picker" id="difficulty-picker">
+            <button type="button" class="difficulty-option selected" data-diff="normal">
+              <span class="diff-icon">🌤️</span>
+              <span class="diff-name">Normal</span>
+              <span class="diff-desc">História</span>
+            </button>
+            <button type="button" class="difficulty-option" data-diff="hard">
+              <span class="diff-icon">⚔️</span>
+              <span class="diff-name">Hard</span>
+              <span class="diff-desc">Prepare to Die</span>
+            </button>
+            <button type="button" class="difficulty-option" data-diff="darksouls">
+              <span class="diff-icon">💀</span>
+              <span class="diff-name">Dark Souls</span>
+              <span class="diff-desc">Sem piedade</span>
+            </button>
+            <button type="button" class="difficulty-option" data-diff="ironman">
+              <span class="diff-icon">☠️</span>
+              <span class="diff-name">Ironman</span>
+              <span class="diff-desc">Morrer = deletar</span>
+            </button>
+          </div>
+          <input type="hidden" id="difficulty" value="normal">
+        </div>
+
+        <div class="buttons">
+          <button type="submit" id="submit-btn" disabled>🔥 Acender Fogueira</button>
+          <button type="button" id="cancel-btn" class="hidden cancel">✖ Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel list-panel">
+      <div class="list-header">
+        <h2>⚔️ Seus Hollows</h2>
+        <button type="button" class="rank-btn" id="show-ranking-btn">🏆 Ranking</button>
+      </div>
+      <div id="characters-list" class="characters-grid">
+        <p class="loading">Carregando almas...</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="enemy-modal" class="modal hidden">
+  <div class="modal-content enemy-picker-modal">
+    <h2>⚔️ Escolha seu Inimigo</h2>
+    <div class="enemy-tabs">
+      <button type="button" class="tab-btn active" data-tab="mobs">👾 Mobs</button>
+      <button type="button" class="tab-btn" data-tab="bosses">👹 Bosses</button>
+    </div>
+    <div id="enemy-list" class="enemy-list"></div>
+    <button type="button" class="cancel" id="close-enemy-btn">✖ Voltar</button>
+  </div>
+</div>
+
+<div id="battle-modal" class="modal hidden">
+  <div class="modal-content battle-modal-content">
+    <h2 id="battle-title">⚔️ Batalha</h2>
+    <div class="battle-arena">
+      <div class="fighter player-side" id="player-fighter">
+        <div class="avatar" id="player-avatar">🛡️</div>
+        <h3 id="battle-player-name">Você</h3>
+        <div class="bar-row"><span class="bar-label">❤️</span><div class="hp-bar"><div id="player-hp-fill" class="hp-fill"></div></div><span class="bar-num" id="player-hp-text">100/100</span></div>
+        <div class="bar-row"><span class="bar-label">⚡</span><div class="hp-bar"><div id="player-stamina-fill" class="stamina-fill"></div></div><span class="bar-num" id="player-stamina-text">100/100</span></div>
+        <div class="bar-row"><span class="bar-label">💠</span><div class="hp-bar"><div id="player-fp-fill" class="fp-fill"></div></div><span class="bar-num" id="player-fp-text">50/50</span></div>
+        <div class="estus-display" id="player-estus">🧪🧪🧪</div>
+        <div class="equipped-badges" id="player-equipped"></div>
+        <div class="status-badges" id="player-status"></div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="fighter boss-side" id="boss-fighter">
+        <div class="avatar" id="boss-avatar">👹</div>
+        <h3 id="battle-boss-name">Inimigo</h3>
+        <div class="bar-row"><span class="bar-label">❤️</span><div class="hp-bar"><div id="boss-hp-fill" class="hp-fill boss"></div></div><span class="bar-num" id="boss-hp-text">100/100</span></div>
+        <div class="status-badges" id="boss-status"></div>
+      </div>
+    </div>
+    <div id="battle-log" class="battle-log"></div>
+    <div id="battle-actions" class="battle-actions">
+      <button type="button" class="action-btn quick" data-action="quick" title="15 stamina • Baixo dano, certeiro">
+        <span class="act-icon">⚡</span><span class="act-name">Rápido</span><span class="act-cost">15⚡</span>
+      </button>
+      <button type="button" class="action-btn normal" data-action="normal" title="25 stamina • Médio">
+        <span class="act-icon">🗡️</span><span class="act-name">Atacar</span><span class="act-cost">25⚡</span>
+      </button>
+      <button type="button" class="action-btn heavy" data-action="heavy" title="50 stamina • Alto, pode errar">
+        <span class="act-icon">💥</span><span class="act-name">Pesado</span><span class="act-cost">50⚡</span>
+      </button>
+      <button type="button" class="action-btn dodge" data-action="dodge" title="30 stamina • Esquiva">
+        <span class="act-icon">💨</span><span class="act-name">Esquivar</span><span class="act-cost">30⚡</span>
+      </button>
+      <button type="button" class="action-btn parry" data-action="parry" title="20 stamina • Apara">
+        <span class="act-icon">🛡️</span><span class="act-name">Aparar</span><span class="act-cost">20⚡</span>
+      </button>
+      <button type="button" class="action-btn skill" data-action="skill" id="skill-btn" title="Habilidade da classe">
+        <span class="act-icon">✨</span><span class="act-name">Skill</span><span class="act-cost">40⚡</span>
+      </button>
+      <button type="button" class="action-btn estus" data-action="estus" title="Cura 40% HP">
+        <span class="act-icon">🧪</span><span class="act-name">Estus</span><span class="act-cost">Grátis</span>
+      </button>
+      <button type="button" class="action-btn flee" data-action="flee" title="20 stamina • 50% chance">
+        <span class="act-icon">🏃</span><span class="act-name">Fugir</span><span class="act-cost">20⚡</span>
+      </button>
+      <div id="spell-bar" class="spell-bar"></div>
+    </div>
+    <div id="battle-result" class="battle-result hidden">
+      <div id="result-text" class="result-text"></div>
+      <button type="button" id="close-battle-btn">🔥 Voltar à Fogueira</button>
+    </div>
+  </div>
+</div>
+
+<div id="inventory-modal" class="modal hidden">
+  <div class="modal-content inventory-modal-content">
+    <div class="inv-header">
+      <h2 id="inventory-title">🎒 Inventário</h2>
+      <div class="inv-stats" id="inv-stats"></div>
+    </div>
+    <div class="inv-toolbar">
+      <div class="inv-tabs" id="inv-tabs">
+        <button type="button" class="inv-tab active" data-tab="all">Tudo</button>
+        <button type="button" class="inv-tab" data-tab="weapon">⚔️ Armas</button>
+        <button type="button" class="inv-tab" data-tab="armor">🛡️ Armaduras</button>
+        <button type="button" class="inv-tab" data-tab="ring">💍 Anéis</button>
+        <button type="button" class="inv-tab" data-tab="scroll">📜 Pergaminhos</button>
+      </div>
+      <div class="inv-filters">
+        <button type="button" class="inv-filter" id="filter-fav" title="Só favoritos">⭐</button>
+        <select id="inv-sort" class="inv-sort">
+          <option value="default">Padrão</option>
+          <option value="rarity">Raridade ↓</option>
+          <option value="power">Poder ↓</option>
+          <option value="name">Nome A-Z</option>
+        </select>
+        <button type="button" class="inv-batch-btn" id="batch-toggle" title="Selecionar vários">☑️ Lote</button>
+      </div>
+    </div>
+    <div class="inv-batch-actions hidden" id="batch-actions">
+      <span id="batch-count">0 selecionados</span>
+      <button type="button" class="sell-btn" id="batch-sell">💰 Vender selecionados</button>
+      <button type="button" class="cancel" id="batch-cancel">✖ Cancelar</button>
+    </div>
+    <div id="inventory-list" class="inventory-list"></div>
+    <button type="button" class="cancel" id="close-inventory-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="spells-modal" class="modal hidden">
+  <div class="modal-content spells-modal-content">
+    <h2>📚 Grimório</h2>
+    <div id="spells-list" class="spells-list"></div>
+    <button type="button" class="cancel" id="close-spells-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="levelup-modal" class="modal hidden">
+  <div class="modal-content levelup-modal-content">
+    <h2>📈 Subir de Nível</h2>
+    <p class="levelup-info">Custo: <b id="levelup-cost">500</b> almas • Suas almas: <b id="levelup-souls">0</b></p>
+    <div class="levelup-attrs">
+      <button type="button" class="levelup-attr" data-attr="vitality"><span>❤️</span><small>Vitalidade</small><b id="lv-vit">10</b></button>
+      <button type="button" class="levelup-attr" data-attr="strength"><span>💪</span><small>Força</small><b id="lv-str">10</b></button>
+      <button type="button" class="levelup-attr" data-attr="dexterity"><span>🏹</span><small>Destreza</small><b id="lv-dex">10</b></button>
+      <button type="button" class="levelup-attr" data-attr="intelligence"><span>🔮</span><small>Inteligência</small><b id="lv-int">10</b></button>
+    </div>
+    <button type="button" class="cancel" id="close-levelup-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="ranking-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>🏆 Ranking Global</h2>
+    <div id="ranking-list" class="ranking-list"></div>
+    <button type="button" class="cancel" id="close-ranking-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="forge-modal" class="modal hidden">
+  <div class="modal-content forge-modal-content">
+    <div class="forge-header">
+      <h2>🔨 Forja de Armadilhas</h2>
+      <div class="forge-souls">🪙 <b id="forge-souls">0</b></div>
+    </div>
+
+    <div class="forge-tabs">
+      <button type="button" class="forge-tab active" data-forge-tab="craft">⚒️ Forjar</button>
+      <button type="button" class="forge-tab" data-forge-tab="upgrade">🔥 Melhorar</button>
+      <button type="button" class="forge-tab" data-forge-tab="infuse">✨ Infundir</button>
+      <button type="button" class="forge-tab" data-forge-tab="materials">📦 Materiais</button>
+    </div>
+
+    <div id="forge-content" class="forge-content"></div>
+    <button type="button" class="cancel" id="close-forge-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="forge-modal" class="modal hidden">
+  <div class="modal-content forge-modal-content">
+    <div class="forge-header">
+      <h2>🔨 Forja de Armadilhas</h2>
+      <div class="forge-souls">🪙 <b id="forge-souls">0</b></div>
+    </div>
+
+    <div class="forge-tabs">
+      <button type="button" class="forge-tab active" data-forge-tab="craft">⚒️ Forjar</button>
+      <button type="button" class="forge-tab" data-forge-tab="upgrade">🔥 Melhorar</button>
+      <button type="button" class="forge-tab" data-forge-tab="infuse">✨ Infundir</button>
+      <button type="button" class="forge-tab" data-forge-tab="materials">📦 Materiais</button>
+    </div>
+
+    <div id="forge-content" class="forge-content"></div>
+    <button type="button" class="cancel" id="close-forge-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="map-modal" class="modal hidden">
+  <div class="modal-content map-modal-content">
+    <div class="map-header">
+      <h2>🗺️ Lordran</h2>
+      <div class="map-info" id="map-info"></div>
+    </div>
+    <div class="map-container">
+      <div id="map-canvas" class="map-canvas"></div>
+    </div>
+    <div id="map-detail" class="map-detail hidden"></div>
+    <div class="map-footer">
+      <span class="map-legend">🔥 Fogueira • 🧙 NPC • ⚔️ Inimigos • 👹 Boss • 🚪 Passagem</span>
+      <button type="button" class="cancel" id="close-map-btn">✖ Fechar</button>
+    </div>
+  </div>
+</div>
+<div id="world-modal" class="modal hidden">
+  <div class="modal-content world-modal-content">
+    <h2>🗺️ Mapa de Lordran</h2>
+    <div id="world-list" class="world-list"></div>
+    <button type="button" class="cancel" id="close-world-btn">✖ Fechar</button>
+  </div>
+</div>
+
+<div id="quests-modal" class="modal hidden">
+  <div class="modal-content quests-modal-content">
+    <h2>📜 Missões</h2>
+    <div id="quests-list" class="quests-list"></div>
+    <button type="button" class="cancel" id="close-quests-btn">✖ Fechar</button>
+  </div>
+</div>
+<div id="loot-modal" class="modal hidden">
+  <div class="modal-content loot-modal-content">
+    <h2>🎁 LOOT!</h2>
+    <div id="loot-content" class="loot-content"></div>
+    <button type="button" id="close-loot-btn">✨ Aceitar</button>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
